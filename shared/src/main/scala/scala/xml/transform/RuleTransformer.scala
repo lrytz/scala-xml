@@ -14,12 +14,12 @@ package scala
 package xml
 package transform
 
-import scala.collection.Seq
+import scala.collection.immutable.{Seq => ISeq}
 
 class RuleTransformer(rules: RewriteRule*) extends BasicTransformer {
-  private val transformers: Seq[NestingTransformer] = rules.map(new NestingTransformer(_))
+  private val transformers: ISeq[NestingTransformer] = rules.map(new NestingTransformer(_))
 
-  override def transform(n: Node): Seq[Node] =
+  override def transform(n: Node): ISeq[Node] =
     if (transformers.isEmpty) n
     else transformers.tail.foldLeft(transformers.head.transform(n)) { (res, transformer) => transformer.transform(res) }
 }

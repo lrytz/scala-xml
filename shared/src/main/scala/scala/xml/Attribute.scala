@@ -14,6 +14,7 @@ package scala
 package xml
 
 import scala.collection.Seq
+import scala.collection.immutable.{Seq => ISeq}
 
 /**
  * This singleton object contains the `apply` and `unapply` methods for
@@ -22,7 +23,7 @@ import scala.collection.Seq
  *  @author  Burak Emir
  */
 object Attribute {
-  def unapply(x: Attribute): Option[(String, Seq[Node], MetaData)] = x match {
+  def unapply(x: Attribute): Option[(String, ISeq[Node], MetaData)] = x match {
     case PrefixedAttribute(_, key, value, next) => Some((key, value, next))
     case UnprefixedAttribute(key, value, next)  => Some((key, value, next))
     case _                                      => None
@@ -56,11 +57,11 @@ object Attribute {
 trait Attribute extends MetaData {
   def pre: String // will be null if unprefixed
   override val key: String
-  override val value: Seq[Node]
+  override val value: ISeq[Node]
   override val next: MetaData
 
-  override def apply(key: String): Seq[Node]
-  override def apply(namespace: String, scope: NamespaceBinding, key: String): Seq[Node]
+  override def apply(key: String): ISeq[Node]
+  override def apply(namespace: String, scope: NamespaceBinding, key: String): ISeq[Node]
   override def copy(next: MetaData): Attribute
 
   override def remove(key: String): MetaData =

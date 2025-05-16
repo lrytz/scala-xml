@@ -13,7 +13,7 @@
 package scala
 package xml
 
-import scala.collection.Seq
+import scala.collection.immutable.{Seq => ISeq}
 
 /**
  * In an attempt to contain the damage being inflicted on consistency by the
@@ -70,7 +70,7 @@ object Equality {
 }
 
 trait Equality extends scala.Equals {
-  protected def basisForHashCode: Seq[Any]
+  protected def basisForHashCode: ISeq[Any]
 
   def strict_==(other: Equality): Boolean
   def strict_!=(other: Equality): Boolean = !strict_==(other)

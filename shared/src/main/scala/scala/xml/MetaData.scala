@@ -16,7 +16,7 @@ package xml
 import Utility.sbToString
 import scala.annotation.tailrec
 import scala.collection.AbstractIterable
-import scala.collection.Seq
+import scala.collection.immutable.{Seq => ISeq}
 
 object MetaData {
   /**
@@ -106,7 +106,7 @@ abstract class MetaData
    * @param  key
    * @return value as Seq[Node] if key is found, null otherwise
    */
-  def apply(key: String): Seq[Node]
+  def apply(key: String): ISeq[Node]
 
   /**
    * convenience method, same as `apply(namespace, owner.scope, key)`.
@@ -115,7 +115,7 @@ abstract class MetaData
    *  @param owner the element owning this attribute list
    *  @param key   the attribute key
    */
-  final def apply(namespace_uri: String, owner: Node, key: String): Seq[Node] =
+  final def apply(namespace_uri: String, owner: Node, key: String): ISeq[Node] =
     apply(namespace_uri, owner.scope, key)
 
   /**
@@ -126,7 +126,7 @@ abstract class MetaData
    * @param  k   to be looked for
    * @return value as Seq[Node] if key is found, null otherwise
    */
-  def apply(namespace_uri: String, scp: NamespaceBinding, k: String): Seq[Node]
+  def apply(namespace_uri: String, scp: NamespaceBinding, k: String): ISeq[Node]
 
   /**
    * returns a copy of this MetaData item with next field set to argument.
@@ -152,7 +152,7 @@ abstract class MetaData
     case m: MetaData => this.asAttrMap == m.asAttrMap
     case _           => false
   }
-  override protected def basisForHashCode: Seq[Any] = List(this.asAttrMap)
+  override protected def basisForHashCode: ISeq[Any] = List(this.asAttrMap)
 
   /** filters this sequence of meta data */
   override def filter(f: MetaData => Boolean): MetaData =
@@ -168,7 +168,7 @@ abstract class MetaData
   def key: String
 
   /** returns value of this MetaData item */
-  def value: Seq[Node]
+  def value: ISeq[Node]
 
   /**
    * Returns a String containing "prefix:key" if the first key is
@@ -194,10 +194,10 @@ abstract class MetaData
    * @param  key
    * @return value in Some(Seq[Node]) if key is found, None otherwise
    */
-  final def get(key: String): Option[Seq[Node]] = Option(apply(key))
+  final def get(key: String): Option[ISeq[Node]] = Option(apply(key))
 
   /** same as get(uri, owner.scope, key) */
-  final def get(uri: String, owner: Node, key: String): Option[Seq[Node]] =
+  final def get(uri: String, owner: Node, key: String): Option[ISeq[Node]] =
     get(uri, owner.scope, key)
 
   /**
@@ -208,7 +208,7 @@ abstract class MetaData
    * @param  key to be looked fore
    * @return value as `Some[Seq[Node]]` if key is found, None otherwise
    */
-  final def get(uri: String, scope: NamespaceBinding, key: String): Option[Seq[Node]] =
+  final def get(uri: String, scope: NamespaceBinding, key: String): Option[ISeq[Node]] =
     Option(apply(uri, scope, key))
 
   protected def toString1: String = sbToString(toString1)

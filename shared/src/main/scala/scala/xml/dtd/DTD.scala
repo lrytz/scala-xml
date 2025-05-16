@@ -15,7 +15,7 @@ package xml
 package dtd
 
 import scala.collection.mutable
-import scala.collection.Seq
+import scala.collection.immutable.{Seq => ISeq}
 
 /**
  * A document type declaration.
@@ -25,8 +25,8 @@ import scala.collection.Seq
 abstract class DTD {
   var externalID: ExternalID = _
   var decls: List[Decl] = Nil
-  def notations: Seq[NotationDecl] = Nil
-  def unparsedEntities: Seq[EntityDecl] = Nil
+  def notations: ISeq[NotationDecl] = Nil
+  def unparsedEntities: ISeq[EntityDecl] = Nil
 
   var elem: mutable.Map[String, ElemDecl] = new mutable.HashMap[String, ElemDecl]()
   var attr: mutable.Map[String, AttListDecl] = new mutable.HashMap[String, AttListDecl]()

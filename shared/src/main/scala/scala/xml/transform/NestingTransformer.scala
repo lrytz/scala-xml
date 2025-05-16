@@ -14,9 +14,9 @@ package scala
 package xml
 package transform
 
-import scala.collection.Seq
+import scala.collection.immutable.{Seq => ISeq}
 
 class NestingTransformer(rule: RewriteRule) extends BasicTransformer {
-  override def transform(n: Node): Seq[Node] =
+  override def transform(n: Node): ISeq[Node] =
     rule.transform(super.transform(n))
 }

@@ -14,6 +14,7 @@ package scala
 package xml
 
 import scala.collection.Seq
+import scala.collection.immutable.{Seq => ISeq}
 
 /**
  * prefixed attributes always have a non-null namespace.
@@ -27,11 +28,13 @@ import scala.collection.Seq
 class PrefixedAttribute(
   override val pre: String,
   override val key: String,
-  override val value: Seq[Node],
+  _value: Seq[Node],
   val next1: MetaData
 )
   extends Attribute
 {
+  override val value: ISeq[Node] = _value.toSeq
+
   override val next: MetaData = if (value != null) next1 else next1.remove(key)
 
   /** same as this(pre, key, Text(value), next), or no attribute if value is null */
@@ -39,7 +42,7 @@ class PrefixedAttribute(
     this(pre, key, if (value != null) Text(value) else null: NodeSeq, next)
 
   /** same as this(pre, key, value.get, next), or no attribute if value is None */
-  def this(pre: String, key: String, value: Option[Seq[Node]], next: MetaData) =
+  def this(pre: String, key: String, value: Option[ISeq[Node]], next: MetaData) =
     this(pre, key, value.orNull, next)
 
   /**
@@ -53,12 +56,12 @@ class PrefixedAttribute(
     owner.getNamespace(pre)
 
   /** forwards the call to next (because caller looks for unprefixed attribute */
-  override def apply(key: String): Seq[Node] = next(key)
+  override def apply(key: String): ISeq[Node] = next(key)
 
   /**
    * gets attribute value of qualified (prefixed) attribute with given key
    */
-  override def apply(namespace: String, scope: NamespaceBinding, key: String): Seq[Node] =
+  override def apply(namespace: String, scope: NamespaceBinding, key: String): ISeq[Node] =
     if (key == this.key && scope.getURI(pre) == namespace)
       value
     else
@@ -66,5 +69,5 @@ class PrefixedAttribute(
 }
 
 object PrefixedAttribute {
-  def unapply(x: PrefixedAttribute): Some[(String, String, Seq[Node], MetaData)] = Some((x.pre, x.key, x.value, x.next))
+  def unapply(x: PrefixedAttribute): Some[(String, String, ISeq[Node], MetaData)] = Some((x.pre, x.key, x.value, x.next))
 }

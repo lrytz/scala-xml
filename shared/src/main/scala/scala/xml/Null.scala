@@ -13,8 +13,7 @@
 package scala
 package xml
 
-import scala.collection.Iterator
-import scala.collection.Seq
+import scala.collection.immutable.{Seq => ISeq}
 
 /**
  * Essentially, every method in here is a dummy, returning Zero[T].
@@ -46,7 +45,7 @@ case object Null extends MetaData {
     case x: MetaData => x.length == 0
     case _           => false
   }
-  override protected def basisForHashCode: Seq[Any] = Nil
+  override protected def basisForHashCode: ISeq[Any] = Nil
 
   override def apply(namespace: String, scope: NamespaceBinding, key: String): ScalaVersionSpecificReturnTypes.NullApply3 = null
   override def apply(key: String): ScalaVersionSpecificReturnTypes.NullApply1 =

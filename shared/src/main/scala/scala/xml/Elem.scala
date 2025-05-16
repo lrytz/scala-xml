@@ -14,6 +14,7 @@ package scala
 package xml
 
 import scala.collection.Seq
+import scala.collection.immutable.{Seq => ISeq}
 
 /**
  * This singleton object contains the `apply` and `unapplySeq` methods for
@@ -30,7 +31,7 @@ object Elem {
   def unapplySeq(n: Node): Option[(String, String, MetaData, NamespaceBinding, ScalaVersionSpecific.SeqNodeUnapplySeq)] =
     n match {
       case _: SpecialNode | _: Group => None
-      case _                         => Some((n.prefix, n.label, n.attributes, n.scope, n.child.toSeq))
+      case _                         => Some((n.prefix, n.label, n.attributes, n.scope, n.child))
     }
 }
 
@@ -78,7 +79,7 @@ class Elem(
   //  setting namespace scope if necessary
   //  cleaning adjacent text nodes if necessary
 
-  override protected def basisForHashCode: Seq[Any] =
+  override protected def basisForHashCode: ISeq[Any] =
     prefix :: label :: attributes :: child.toList
 
   /**
@@ -104,7 +105,7 @@ class Elem(
     scope: NamespaceBinding = this.scope,
     minimizeEmpty: Boolean = this.minimizeEmpty,
     child: Seq[Node] = this.child
-  ): Elem = Elem(prefix, label, attributes, scope, minimizeEmpty, child: _*)
+  ): Elem = Elem(prefix, label, attributes, scope, minimizeEmpty, child.toSeq: _*)
 
   /**
    * Returns concatenation of `text(n)` for each child `n`.

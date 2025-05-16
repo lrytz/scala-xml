@@ -15,6 +15,7 @@ package xml
 package transform
 
 import scala.collection.Seq
+import scala.collection.immutable.{Seq => ISeq}
 
 /**
  * A RewriteRule, when applied to a term, yields either
@@ -24,7 +25,7 @@ import scala.collection.Seq
  *  @author  Burak Emir
  */
 abstract class RewriteRule extends BasicTransformer {
-  override def transform(ns: Seq[Node]): Seq[Node] = super.transform(ns)
-  override def transform(n: Node): Seq[Node] = n
+  override def transform(ns: Seq[Node]): ISeq[Node] = super.transform(ns)
+  override def transform(n: Node): ISeq[Node] = n
 }
 

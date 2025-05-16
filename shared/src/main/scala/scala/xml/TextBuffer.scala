@@ -14,6 +14,7 @@ package scala
 package xml
 
 import scala.collection.Seq
+import scala.collection.immutable.{Seq => ISeq}
 import Utility.isSpace
 
 object TextBuffer {
@@ -45,8 +46,8 @@ class TextBuffer {
    *
    *  @return the text without whitespaces.
    */
-  def toText: Seq[Text] = sb.toString.trim match {
+  def toText: ISeq[Text] = sb.toString.trim match {
     case "" => Nil
-    case s  => Seq(Text(s))
+    case s  => ISeq(Text(s))
   }
 }

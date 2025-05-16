@@ -66,7 +66,7 @@ abstract class NodeSeq extends AbstractSeq[Node] with immutable.Seq[Node] with S
     !these.hasNext && !those.hasNext
   }
 
-  override protected def basisForHashCode: Seq[Any] = theSeq
+  override protected def basisForHashCode: ISeq[Any] = theSeq
 
   override def canEqual(other: Any): Boolean = other match {
     case _: NodeSeq => true
@@ -98,7 +98,7 @@ abstract class NodeSeq extends AbstractSeq[Node] with immutable.Seq[Node] with S
     def fail: Nothing = throw new IllegalArgumentException(that)
     def atResult: NodeSeq = {
       lazy val y: Node = this(0)
-      val attr: Option[Seq[Node]] =
+      val attr: Option[ISeq[Node]] =
         if (that.length == 1) fail
         else if (that(1) == '{') {
           val i: Int = that.indexOf('}')

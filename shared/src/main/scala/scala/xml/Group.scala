@@ -35,7 +35,7 @@ final case class Group(nodes: Seq[Node]) extends Node {
     case _         => false
   }
 
-  override protected def basisForHashCode: Seq[Node] = nodes
+  override protected def basisForHashCode: ISeq[Node] = nodes.toSeq
 
   /**
    * Since Group is very much a hack it throws an exception if you

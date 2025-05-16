@@ -13,7 +13,7 @@
 package scala
 package xml
 
-import scala.collection.Seq
+import scala.collection.immutable.{Seq => ISeq}
 
 /**
  * The class `NamespaceBinding` represents namespace bindings
@@ -68,7 +68,7 @@ case class NamespaceBinding(prefix: String, uri: String, parent: NamespaceBindin
     case _                   => false
   }
 
-  override def basisForHashCode: Seq[Any] = List(prefix, uri, parent)
+  override def basisForHashCode: ISeq[Any] = List(prefix, uri, parent)
 
   def buildString(stop: NamespaceBinding): String = Utility.sbToString(buildString(_, stop))
 

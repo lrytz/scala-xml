@@ -13,7 +13,7 @@
 package scala
 package xml
 
-import scala.collection.Seq
+import scala.collection.immutable.{Seq => ISeq}
 
 /**
  * The class `Atom` provides an XML node for text (`PCDATA`).
@@ -26,7 +26,7 @@ class Atom[+A](val data: A) extends SpecialNode with Serializable {
   if (data == null)
     throw new IllegalArgumentException(s"cannot construct ${getClass.getSimpleName} with null")
 
-  override protected def basisForHashCode: Seq[Any] = Seq(data)
+  override protected def basisForHashCode: ISeq[Any] = Seq(data)
 
   override def strict_==(other: Equality): Boolean = other match {
     case x: Atom[?] => data == x.data

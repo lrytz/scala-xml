@@ -15,6 +15,7 @@ package xml
 package transform
 
 import scala.collection.Seq
+import scala.collection.immutable.{Seq => ISeq}
 
 /**
  * A class for XML transformations.
@@ -29,25 +30,25 @@ abstract class BasicTransformer extends (Node => Node) {
    * Call transform(Node) for each node in ns, append results
    *  to NodeBuffer.
    */
-  def transform(it: Iterator[Node], nb: NodeBuffer): Seq[Node] =
+  def transform(it: Iterator[Node], nb: NodeBuffer): NodeBuffer =
     it.foldLeft(nb)(_ ++= transform(_))
 
   /**
    * Call transform(Node) to each node in ns, yield ns if nothing changes,
    *  otherwise a new sequence of concatenated results.
    */
-  def transform(ns: Seq[Node]): Seq[Node] = {
-    val changed: Seq[Node] = ns.flatMap(transform)
+  def transform(ns: Seq[Node]): ISeq[Node] = {
+    val changed: ISeq[Node] = ns.toSeq.flatMap(transform)
     if (changed.length != ns.length || changed.zip(ns).exists(p => p._1 != p._2)) changed
-    else ns
+    else ns.toSeq
 }
 
-  def transform(n: Node): Seq[Node] =
+  def transform(n: Node): ISeq[Node] =
     if (n.doTransform) n match {
       case Group(xs) => Group(transform(xs)) // un-group the hack Group tag
       case _ =>
         val ch: Seq[Node] = n.child
-        val nch: Seq[Node] = transform(ch)
+        val nch: ISeq[Node] = transform(ch)
 
         if (ch.eq(nch)) n
         else Elem(n.prefix, n.label, n.attributes, n.scope, nch.isEmpty, nch: _*)
