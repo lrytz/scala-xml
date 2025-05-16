@@ -17,6 +17,7 @@ import scala.collection.{mutable, immutable, AbstractSeq}
 import ScalaVersionSpecific.CBF
 import scala.language.implicitConversions
 import scala.collection.Seq
+import scala.collection.immutable.{Seq => ISeq}
 
 /**
  * This object ...
@@ -26,7 +27,7 @@ import scala.collection.Seq
 object NodeSeq {
   final val Empty: NodeSeq = fromSeq(Nil)
   def fromSeq(s: Seq[Node]): NodeSeq = new NodeSeq {
-    override def theSeq: Seq[Node] = s
+    override def theSeq: ISeq[Node] = s.toSeq
   }
 
   // ---
@@ -48,7 +49,7 @@ object NodeSeq {
  *  @author  Burak Emir
  */
 abstract class NodeSeq extends AbstractSeq[Node] with immutable.Seq[Node] with ScalaVersionSpecificNodeSeq with Equality with Serializable {
-  def theSeq: Seq[Node]
+  def theSeq: ISeq[Node]
   override def length: Int = theSeq.length
   override def iterator: Iterator[Node] = theSeq.iterator
 

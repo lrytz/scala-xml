@@ -14,6 +14,7 @@ package scala
 package xml
 
 import scala.collection.Seq
+import scala.collection.immutable.{Seq => ISeq}
 
 /**
  * A document information item (according to InfoSet spec). The comments
@@ -96,7 +97,7 @@ class Document extends NodeSeq with Serializable {
 
   // methods for NodeSeq
 
-  override def theSeq: Seq[Node] = this.docElem
+  override def theSeq: ISeq[Node] = this.docElem
 
   override def canEqual(other: Any): Boolean = other match {
     case _: Document => true

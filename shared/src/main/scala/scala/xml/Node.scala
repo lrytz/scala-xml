@@ -14,6 +14,7 @@ package scala
 package xml
 
 import scala.collection.Seq
+import scala.collection.immutable.{Seq => ISeq}
 
 /**
  * This singleton object contains the `unapplySeq` method for
@@ -120,12 +121,12 @@ abstract class Node extends NodeSeq {
    *
    * @return all children of this node
    */
-  def child: Seq[Node]
+  def child: ISeq[Node]
 
   /**
    * Children which do not stringify to "" (needed for equality)
    */
-  def nonEmptyChildren: Seq[Node] = child.filterNot(_.toString.isEmpty)
+  def nonEmptyChildren: ISeq[Node] = child.filterNot(_.toString.isEmpty)
 
   /**
    * Descendant axis (all descendants of this node, not including node itself)
@@ -166,7 +167,7 @@ abstract class Node extends NodeSeq {
   /**
    *  returns a sequence consisting of only this node
    */
-  override def theSeq: Seq[Node] = this :: Nil
+  override def theSeq: ISeq[Node] = this :: Nil
 
   /**
    * String representation of this node
